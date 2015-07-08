@@ -1,0 +1,98 @@
+# 1. The data below are the number of points scored in 30 games by the Portland Trailblazers.
+Scores: 90, 95, 89, 71, 73, 96, 87, 95, 107, 89, 96, 80, 97, 95, 102, 97, 93, 101, 82 83, 74, 91, 83, 98, 95, 111, 99, 120, 93, 84
+
+## a. Estimate the sample mean score. What does the quantity estimate?
+
+pt <- c(90, 95, 89, 71, 73, 96, 87, 95, 107, 89, 96, 80, 97, 95, 102, 97, 93, 101, 82, 83, 74, 91, 83, 98, 95, 111, 99, 120, 93, 84)
+pt_M <- mean(pt)
+pt_M
+
+answer: 92.2
+
+## b. Is the estimate in part (a) likely to equal the population parameter? Why or why not?
+
+It might be close but not likely to be exactly the population estimate
+Because of the sampling
+
+## c. Calculate the standard error for your sample estimate.
+
+SE <- sd(pt)/sqrt(length(pt))
+SE
+
+answer: 1.98
+
+## d. What does the quantity in part (c) measure?
+
+It is a standard error which is the standard deviation of the sampling distribution of a statistic.
+
+## e. Calculate a 95% confidence interval for the population mean.
+
+mean(pt)-2*sd(pt)/sqrt(length(pt))
+
+answer: 88.25
+
+## f. Provide an interpretation for the interval you calculated in part (e)
+
+The interval will include the true population mean
+
+# 2. Using the following data, test the null hypothesis that male and females have the same mean cholesterol concentrations. Include descriptive statistics, hypothesis testing (e.g., t-test) and 95% confidence intervals.
+
+Male: 220.1, 218.6, 229.6, 228.8, 222.0, 224.1, 226.5
+Female: 223.4, 221.5, 230.2, 224.3, 223.8, 230.8
+
+m <- c(220.1, 218.6, 229.6, 228.8, 222.0, 224.1, 226.5)
+f <- c(223.4, 221.5, 230.2, 224.3, 223.8, 230.8)
+mean(m)
+mean(f)
+sd(m)
+sd(f)
+t.test(m,f)
+
+we cannot reject null hypothesis
+because they are different (p-value=0.5405)
+
+# 3. A clinical trail was carried out to test whether a new treatment has an effect on the rate of recovery of patients. The null hypothesis "H0: the treatment has no effect" was rejected with a P-value of 0.04. The researchers used a significance level of 5%. State whether the following conclusions is correct. If not, explain why.
+
+## a. The treatment has only a small effect
+
+False
+The p-value says nothing about the size of the effect
+
+## b. The treatment has some effect
+
+True
+The null hypothesis was rejected so we can coincide the effect
+
+## c. The probability of committing a Type I error is 0.04
+
+False
+The probability of committing a type I error means the error of rejecting something that should have been accepted. But in this case we rejected the hypothesis which had to be rejected. So it's not the case of committing a Type I error.
+
+## d. The probability of committing a Type II error is 0.04
+
+False, the probability of committing a type II error means the error of not rejecting something that shoud have been rejected. But in this case we rejected the hypothesis which had to be rejected. So it's not the case of committing a Type II error.
+
+## e. The null hypothesis would not have been rejected if the significance level was a=0.01
+
+True
+
+# 4. The data below are volumes of red blood cells from two individuals. Test the hypothesis (using the Mann-Whitney U test) that the red blood cells of person B are 1.5 times the volume of person A
+person A: 248, 236, 269, 254, 249, 251, 260, 245, 239, 255
+person B: 380, 391, 377, 392, 398, 374
+
+pA <- c(248, 236, 269, 254, 249, 251, 260, 245, 239, 255)
+pB <- c(380, 391, 377, 392, 398, 374)
+pA2 <- 1.5*pA
+
+Ho = pA cells have volume 1.5*pB
+Ha = pB cells don't have volume  1.5*pB
+
+t.test(pA2, pB)
+
+p-value = 0.15
+
+answer: Since p-value is bigger than 0.05, we can't reject Ho.
+
+# 5. What is the difference between the standard error of mean and the standard deviation? Provide example data that illustrates their difference
+
+Standard deviation is a measure of dispersion within your data set. However, standard error is considered the level of dispersion of your data from a population mean. In other words, standard error tells you how confident you are in some ways and how confident the sampling mean is to the population mean. As you add more and more sample, then the standard error will go to almost zero. On the other hand, if you add more and more n in standard deviation, you just get close to the actual population.
