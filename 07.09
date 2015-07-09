@@ -1,0 +1,103 @@
+in class regression
+
+# 2. A store keeps track of purchase history. The manager wonders if there is an association between the amount of money a customer spends on their first visit to the store and their second visit. Below is data collected on 10 customers. Each column corresponds to one customer. For example, the first customer spend $20 on the first visit and $23 on the second visit. The second customer spend $32 on first visit and $34 on second, etc.
+
+Money spent on first visit (in dollars): 20,32,35,34,40,51,52,56,57,68
+Money spent on second visit (in dollars): 23,34,36,44,42,51,54,57,54,62
+
+## a. Display the relationship between first and second visit dollar amounts?
+
+c1 <- c(20,32,35,34,40,51,52,56,57,68)
+c2 <- c(23,34,36,44,42,51,54,57,54,62)
+plot(c1, c2, xlab="First visit spending", ylab="Second visit spending")
+
+## b. Describe the pattern in part (a) briefly. Is there a relationship? Is it positive or negative? Is it linear or non-linear? Is it weak or strong?
+
+answer: Yes, there is a positive, linear and strong relationship.
+
+## c. Calculate the correlation coefficient between the amount of money spent on the first visit and the second visit.
+
+r <- cor(c1, c2)
+r
+
+answer: 0.97
+
+## d. What does the standard error in part (c) refer to?
+
+SE <- sqrt((1-r^2)/(length(c1)-2))
+It refers to the sample distribution of r
+
+## e. Calculate an approximate 95% confidence interval for p.
+
+rt <- cor.test(c1,c2)
+rt
+
+rt$conf.int
+
+answer: 0.87-0.99
+So the value is 0.97
+
+# 3. Answer the following question using the data from question (2).
+
+## a. Adding $30 to each of the observations for the second visit. How is the correlation coefficient between first and second visits affected? What can you conclude about the effects on the correlation coefficient of adding a constant to one or both of the variables?
+
+c1_B <- c1 +30
+c2_B <- c2 +30
+cor(c1, c2_B)
+
+It does not change.
+
+## b. Convert the first visit to cents (i.e., multiply by 100). How does this affect the correlation between the first and second visits? What can you conclude about the effects on the correlation coefficient of multiplying one or both of the variables by a constant?
+
+c1.C <- c1*100
+cor(c1.C, c2)
+
+It does not change.
+If you have an extreme value in your data set, then you can dramatically affect your correlation coefficient.
+
+# 4. Some species seem to thrive in captivity, whereas others are prone to health and behavior difficulties when caged. Maternal care problems in some captive species, for example, lead to high infant mortality. Can these differences be predicted? The following data are measurements of the infant mortality (percentage of births) of 20 carnivore species in captivity along with the log (based-10) of the minimal home range sizes (in km2) of the same species in the wild (Clubb and Mason 2003). For example, -1.3 is the home range and 4 is the captive infant mortality percentage.
+
+Log home range size: -1.3(4), -0.5(22), -0.3(0), 0.2(0), 0.1(11), 0.5(13), 1.0(17), 0.3(25), 0.4(24), 0.5(27),  0.1(29), 0.2(33), 0.4(33), 1.3(42), 1.2(33), 1.4(20), 1.6(19), 1.8(25), 3.1(65)
+
+## a. Draw a scatter plot of these data, with log of home range size as the explanatory variable. Describe the association between the two variables in words.
+
+b1 <- c(-1.3, -0.5, -0.3, 0.2, 0.1, 0.5, 1.0, 0.3, 0.4, 0.5, 0.1, 0.2, 0.4, 1.3, 1.2, 1.4, 1.6, 1.8, 3.1)
+b2 <- c(4,22,0,0,11,13,17,25,24,27,29,33,33,42,33,20,19,25,65)
+plot(b1,b2)
+
+There is a positive and linear relationship.
+
+## b. Estimate the slope and intercept of the least squares regression line, with the log of home range size as the explanatory variable. Add this line to your plot.
+
+m <- lm(b2~b1)
+m
+abline(m)
+
+answer
+slope: 10.71
+intercept:16.50
+
+## c. Does home range size in the wild predict the mortality of captive carnivores? Carry out a formal test. Assume that the species data are independent.
+
+Ho: home range size does not predict infant mortality (beta=0)
+Ha: home range size does predict infant mortality (beta !=0)
+
+summary(m)
+a <- m$coefficient[1]
+b <- m$coefficient[2]
+a = 16.49935
+b = 10.70937
+
+b= 10.7 a=16.5, SE=11.54, t=3.6, df=17, p=0.001
+
+## d. Outliers should be investigated because they might have a substantial effect on the estimate so of the slope and intercept. Recalculate the slope and intercept of the regression line from part (c) after excluding the outlier at large home range size (which correspond to the polar bear). Add the new line to your plot. By how much did it change the slope?
+
+b1_p <- c(-1.3, -0.5, -0.3, 0.2, 0.1, 0.5, 1.0, 0.3, 0.4, 0.5, 0.1, 0.2, 0.4, 1.3, 1.2, 1.4, 1.6, 1.8, 3.1)
+b2_p <- c(4,22,0,0,11,13,17,25,24,27,29,33,33,42,33,20,19,25,65)
+plot(b1_p, b2_p)
+m_p <- lm(b2_p~b1_p)
+abline(m_p)
+summary(m_p)
+
+We still reject the Null hypothesis,
+because the p-value is still less than 0.05
